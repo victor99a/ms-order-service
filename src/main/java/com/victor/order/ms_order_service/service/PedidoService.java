@@ -1,6 +1,7 @@
 package com.victor.order.ms_order_service.service;
 
 
+import com.victor.order.ms_order_service.dto.CrearPedidoDTO;
 import com.victor.order.ms_order_service.dto.PedidoDTO;
 import com.victor.order.ms_order_service.mapper.PedidoMapper;
 import com.victor.order.ms_order_service.model.DetallePedido;
@@ -39,11 +40,12 @@ public class PedidoService {
     }
 
     // Crear
-    public PedidoDTO crear(PedidoDTO dto) {
+    public PedidoDTO crear(CrearPedidoDTO dto) {
         // 1) DTO -> entidad
         Pedido pedido = mapper.toEntity(dto);
 
         // 2) completar datos
+        pedido.setFechaPedido(LocalDateTime.now());
         pedido.setIdPedido(null); // si viene algo en el JSON
         pedido.setFechaPedido(LocalDateTime.now());
         pedido.setEstadoPedido(String.valueOf(EstadoPedido.CREADO));
@@ -89,7 +91,6 @@ public class PedidoService {
         Pedido pedidoNuevo = mapper.toEntity(dto);
 
         existente.setIdUsuario(pedidoNuevo.getIdUsuario());
-        existente.setEstadoPedido(pedidoNuevo.getEstadoPedido()); // si DTO lo trae
 
         BigDecimal totalPedido = BigDecimal.ZERO;
 
