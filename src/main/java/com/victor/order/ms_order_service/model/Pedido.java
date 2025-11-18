@@ -1,7 +1,9 @@
 package com.victor.order.ms_order_service.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,20 +11,24 @@ import java.util.List;
 
 @Entity
 @Table(name = "pedido")
+@Data
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_pedido")
-    private long idPedido;
+    private Long idPedido;
 
     @Column(name = "id_usuario", nullable = false)
-    private long idUsuario;
+    private Long idUsuario;
 
     @Column(name = "fecha_pedido", nullable = false)
     private LocalDateTime fechaPedido;
 
+    @Column(name = "estado_pedido", nullable = false)
+    private String estadoPedido;
+
     @Column(name = "total_pedido", nullable = false)
-    private double totalPedido;
+    private BigDecimal totalPedido;
 
     @OneToMany(
             mappedBy = "pedido",

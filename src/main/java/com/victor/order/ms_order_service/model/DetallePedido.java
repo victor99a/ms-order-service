@@ -3,6 +3,8 @@ package com.victor.order.ms_order_service.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "detalle_pedido")
 @Data
@@ -31,12 +33,12 @@ public class DetallePedido {
 
     //sin iva
     @Column(name = "subtotal", nullable = false)
-    private Double subtotal;
+    private BigDecimal subtotal;
 
     @Column(name = "iva", nullable = false)
-    private Double iva;
+    private BigDecimal iva;
 
     //subtotal + iva
     @Column(name = "total_detalle", nullable = false)
-    private Double totalDetalle;
+    private BigDecimal totalDetalle;
 }
