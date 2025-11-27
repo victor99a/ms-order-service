@@ -6,6 +6,7 @@ import com.victor.order.ms_order_service.dto.PedidoDTO;
 import com.victor.order.ms_order_service.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -15,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/pedidos")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3000")
 public class PedidoController {
     private final PedidoService pedidoService;
 
@@ -46,5 +46,16 @@ public class PedidoController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id){
         pedidoService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    //Trabajador pastelero
+    @GetMapping("/activos")
+    public List<PedidoDTO> listarActivos() {
+        return pedidoService.listarActivos();
+    }
+
+    @PutMapping("/{id}/enviar")
+    public PedidoDTO marcarEnviado(@PathVariable Long id) {
+        return pedidoService.marcarEnviado(id);
     }
 }

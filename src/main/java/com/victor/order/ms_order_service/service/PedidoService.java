@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -127,4 +128,33 @@ public class PedidoService {
         }
         pedidoRepository.deleteById(id);
     }
+
+    // Trabajador pastelero
+    // 1) LISTAR PEDIDOS “ACTIVOS” PARA EL TRABAJADOR
+    public List<PedidoDTO> listarActivos() {
+        List<String> estadosActivos = Arrays.asList(
+                EstadoPedido.CREADO.name(),
+                EstadoPedido.FACTURADO.name()
+        );
+
+        return pedidoRepository.findByEstadoPedidoIn(estadosActivos)
+                .stream()
+                .map(mapper::toDTO)
+                .toList();
+    }
+
+    public PedidoDTO marcarEnviado(Long id) {
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Pedido no encontrado: " + id));
+
+        // ahora la regla es: FACTURADO → ENVIADO
+        if (!pedido.getEstadoPedido().equals(EstadoPedido.FACTURADO.name())) {
+            throw new RuntimeException("Sólo se pueden marcar como ENVIADO los pedidos FACTURADO");
+        }
+
+        pedido.setEstadoPedido(EstadoPedido.ENVIADO.name());
+        Pedido guardado = pedidoRepository.save(pedido);
+        return mapper.toDTO(guardado);
+    }
 }
+

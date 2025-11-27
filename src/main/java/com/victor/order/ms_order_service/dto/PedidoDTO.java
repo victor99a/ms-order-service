@@ -8,6 +8,7 @@ public record PedidoDTO(
         Long idUsuario,
         LocalDateTime fechaPedido,
         double totalPedido,
+        String estadoPedido,
         List<DetallePedidoDTO> detalles
 ) {
 }
